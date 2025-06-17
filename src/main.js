@@ -10,7 +10,7 @@ const material = new THREE.MeshStandardMaterial({
   roughness: 0.3,
   metalness: 0.6,
   wireframe: true,
-  color: 0x888888,
+  color: "#191970",
 });
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
