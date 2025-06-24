@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Careers - DevSphere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="icon" type="image/png" href="/Untitled design.png" />
+    <style>
+        .loading-spinner {
+            border: 2px solid #374151;
+            border-top: 2px solid #6366f1;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+  </head>
+  <body class="bg-black text-white min-h-screen">
+ <nav class="relative top-0 left-0 right-0 z-20 flex items-center justify-between p-4 md:p-6">
+    <!-- Logo -->
+   <img src="/new.png" alt="DevSphere Logo" class="h-14 md:h-22 lg:h-26 w-auto" />
+
+    
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex space-x-6 lg:space-x-8 text-gray-300">
+        <a href="/index.html" class="hover:text-white transition-colors">Home</a>
+        <a href="/index.html/#impact" class="hover:text-white transition-colors">Impact</a>
+        <a href="/index.html/#services" class="hover:text-white transition-colors">Services</a>
+        <a href="/index.html/#whoweare" class="hover:text-white transition-colors">Who we are</a>
+        <a href="/index.html/#whatwedo" class="hover:text-white transition-colors">What we do</a>
+        <a href="/jobs.html" class="hover:text-white transition-colors">Careers</a>
+
+    </div>
+    
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1">
+        <span class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+        <span class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+    </button>
+    
+    <!-- Desktop CTA Button - FIXED: Changed ID to desktopBookingButton -->
+    <button id="desktopBookingButton" class="hidden md:block bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 md:px-6 md:py-2 rounded-full transition-colors text-sm md:text-base">
+        Let's Talk
+    </button>
+</nav>
+
+<div id="mobileMenu" class="fixed inset-0 z-10 bg-black bg-opacity-95 transform -translate-y-full transition-transform duration-300 ease-in-out md:hidden">
+    <div class="flex flex-col items-center justify-center h-full space-y-8 text-white text-xl">
+        <a href="/index.html/#home" class="hover:text-indigo-400 transition-colors" onclick="closeMobileMenu()">Home</a>
+        <a href="/index.html/#impact" class="hover:text-indigo-400 transition-colors" onclick="closeMobileMenu()">Impact</a>
+        <a href="/index.html/#services" class="hover:text-indigo-400 transition-colors" onclick="closeMobileMenu()">Services</a>
+        <a href="/index.html/#whoweare" class="hover:text-indigo-400 transition-colors" onclick="closeMobileMenu()">Who we are</a>
+        <a href="/index.html/#whatwedo" class="hover:text-indigo-400 transition-colors" onclick="closeMobileMenu()">What we do</a>
+        <a href="/jobs.html" class="hover:text-indigo-400 transition-colors" onclick="closeMobileMenu()">Careers</a>
+
+        <!-- FIXED: Changed ID to mobileBookingButton -->
+        <button id="mobileBookingButton" class="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-3 rounded-full transition-colors text-lg mt-4">
+            Let's Talk
+        </button>
+    </div>
+</div>
+
+
+
+    <section class="text-center py-20 bg-black">
+      <div class="max-w-4xl mx-auto px-6">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">
+          We're <span class="text-indigo-400">Hiring!</span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-8">
+          Join our amazing team and help us build the future of technology
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#job"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full transition-colors"
+          >
+            View Open Positions
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Section -->
+    <!-- <section class="py-12 bg-gray-900">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="flex flex-wrap gap-4 justify-center">
+          <button
+            class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-full transition-colors"
+          >
+            All Positions
+          </button>
+          <button
+            class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-full transition-colors"
+          >
+            Engineering
+          </button>
+          <button
+            class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-full transition-colors"
+          >
+            Design
+          </button>
+          <button
+            class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-full transition-colors"
+          >
+            Marketing
+          </button>
+          <button
+            class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-full transition-colors"
+          >
+            Sales
+          </button>
+        </div>
+      </div>
+    </section> -->
+
+    
+
+    <section id="job" class="py-16 bg-black">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12">Open Positions</h2>
+
+        <div id="loading" class="text-center py-12">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <p class="text-gray-400">Loading positions...</p>
+        </div>
+        
+
+        <div id="error" class="text-center py-12 hidden">
+            <p class="text-red-400 mb-4">Failed to load positions</p>
+            <button onclick="loadJobs()" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-colors">
+                Try Again
+            </button>
+        </div>  
+        <h1 id="no-jobs" class="text-4xl text-gray-600 font-bold text-center hidden">Sorry! No Positions Available</h2>
+<section>
+   
+        <div id="jobs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+      </div>
+    </section>
+
+        
+</section>
+
+    <section class="py-16 bg-gray-900">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12">Why Work With Us?</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center">
+            <div
+              class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Fast Growth</h3>
+            <p class="text-gray-400">
+              Rapid career advancement opportunities in a growing company
+            </p>
+          </div>
+
+          <div class="text-center">
+            <div
+              class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Great Benefits</h3>
+            <p class="text-gray-400">
+              Competitive salary, and flexible work
+              arrangements
+            </p>
+          </div>
+
+          <div class="text-center">
+            <div
+              class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Amazing Team</h3>
+            <p class="text-gray-400">
+              Work with talented, passionate people who care about their craft
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="py-16 bg-black text-center">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-6">Don't See Your Role?</h2>
+        <p class="text-xl text-gray-300 mb-8">
+          We're always looking for talented people. Send us your resume and
+          we'll keep you in mind for future opportunities.
+        </p>
+        <button
+          class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full transition-colors"
+        >
+          Send Resume
+        </button>
+      </div>
+    </section>
+
+
+    <section id="footer">
+      <footer class="footer sm:footer-horizontal bg-gray-900 text-neutral-content p-10">
+  <aside>
+     <img src="/bg-none.png" alt="DevSphere Logo" class="h-14 md:h-22 lg:h-26 w-auto" />
+    <p class="text-white">
+      DevSphere Ltd.
+      <br />
+      Providing reliable tech Solutions
+      <br />
+      Contact: info@devsphereltd.com
+    </p>
+  </aside>
+  <nav>
+    <h6 class="footer-title">Social</h6>
+    <div class="grid grid-flow-col gap-4">
+      <a href="https://www.linkedin.com/company/devspherelt" target="_blank">
+       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0,0,256,256"
+style="fill:#ffffff7b;">
+<g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M41,4h-32c-2.76,0 -5,2.24 -5,5v32c0,2.76 2.24,5 5,5h32c2.76,0 5,-2.24 5,-5v-32c0,-2.76 -2.24,-5 -5,-5zM17,20v19h-6v-19zM11,14.47c0,-1.4 1.2,-2.47 3,-2.47c1.8,0 2.93,1.07 3,2.47c0,1.4 -1.12,2.53 -3,2.53c-1.8,0 -3,-1.13 -3,-2.53zM39,39h-6c0,0 0,-9.26 0,-10c0,-2 -1,-4 -3.5,-4.04h-0.08c-2.42,0 -3.42,2.06 -3.42,4.04c0,0.91 0,10 0,10h-6v-19h6v2.56c0,0 1.93,-2.56 5.81,-2.56c3.97,0 7.19,2.73 7.19,8.26z"></path></g></g>
+</svg>
+      </a>
+      <a href="https://www.instagram.com/devspherelt?igsh=MTA4MXZndzBzMW40ag==" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+        width="28" height="28" class="fill-current" viewBox="0,0,256,256"
+>
+<g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(10.66667,10.66667)"><path d="M8,3c-2.757,0 -5,2.243 -5,5v8c0,2.757 2.243,5 5,5h8c2.757,0 5,-2.243 5,-5v-8c0,-2.757 -2.243,-5 -5,-5zM8,5h8c1.654,0 3,1.346 3,3v8c0,1.654 -1.346,3 -3,3h-8c-1.654,0 -3,-1.346 -3,-3v-8c0,-1.654 1.346,-3 3,-3zM17,6c-0.55228,0 -1,0.44772 -1,1c0,0.55228 0.44772,1 1,1c0.55228,0 1,-0.44772 1,-1c0,-0.55228 -0.44772,-1 -1,-1zM12,7c-2.757,0 -5,2.243 -5,5c0,2.757 2.243,5 5,5c2.757,0 5,-2.243 5,-5c0,-2.757 -2.243,-5 -5,-5zM12,9c1.654,0 3,1.346 3,3c0,1.654 -1.346,3 -3,3c-1.654,0 -3,-1.346 -3,-3c0,-1.654 1.346,-3 3,-3z"></path></g></g>
+</svg>
+      </a>
+      <a href="https://www.facebook.com/devspherelt/" target="_blank" >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          class="fill-current" style="color: white;">
+          <path
+            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+        </svg>
+      </a>
+    </div>
+  </nav>
+</footer>
+</footer>
+    </section>
+    <div
+      id="bookingPanel"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div class="container mx-auto p-4 max-w-4xl relative">
+        <!-- Close Button -->
+        <button
+          id="closeButton"
+          class="btn btn-circle btn-sm absolute right-4 top-4 z-10"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <!-- Panel Content -->
+        <div class="card bg-black shadow-lg max-h-[90vh] overflow-y-auto">
+          <div class="card-body">
+            <!-- Header -->
+            <div class="text-center mb-6">
+              <h1 class="text-3xl font-bold text-primary">Dev Sphere</h1>
+              <h2 class="text-xl font-semibold mt-2">
+                Schedule a meeting with us
+              </h2>
+              <div
+                class="flex justify-center items-center gap-2 mt-2 text-gray-600"
+              >
+                <span>30 Mins</span>
+                <span>•</span>
+                <span id="selectedDateDisplay">Select a date</span>
+                <span>•</span>
+                <span>America/Los_Angeles (PDT)</span>
+              </div>
+            </div>
+
+            <!-- Welcome Message -->
+            <!-- <div class="bg-gray-100 p-4 rounded-lg mb-6">
+              <p class="text-gray-700">
+                
+                <button class="text-primary font-semibold">Show More</button>
+              </p>
+            </div> -->
+
+            <div class="divider"></div>
+
+            <!-- Form Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Left Column - Calendar -->
+              <div>
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-semibold" id="currentMonthYear">
+                    January 2025
+                  </h3>
+                  <div class="flex gap-2">
+                    <button id="prevMonth" class="btn btn-sm btn-ghost">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 19l-7-7 7-7"
+                        />
+                      </svg>
+                    </button>
+                    <button id="nextMonth" class="btn btn-sm btn-ghost">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="text-center p-2">Sun</th>
+                        <th class="text-center p-2">Mon</th>
+                        <th class="text-center p-2">Tue</th>
+                        <th class="text-center p-2">Wed</th>
+                        <th class="text-center p-2">Thu</th>
+                        <th class="text-center p-2">Fri</th>
+                        <th class="text-center p-2">Sat</th>
+                      </tr>
+                    </thead>
+                    <tbody id="calendarBody">
+                      <!-- Calendar will be generated here by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Right Column - Form -->
+              <div>
+                <h3 class="text-lg font-semibold mb-4">Enter Details</h3>
+                <form id="bookingForm" class="space-y-4">
+                  <input type="hidden" id="selectedDate" name="selectedDate" />
+
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text required">First Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      placeholder="First Name"
+                      class="input input-bordered w-full"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text">Last Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      placeholder="Last Name"
+                      class="input input-bordered w-full"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text required">Email</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      class="input input-bordered w-full"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-control">
+                    <label class="label">
+                      <span class="label-text required"
+                        >Phone with Country Code</span
+                      >
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      placeholder="Phone"
+                      class="input input-bordered w-full"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-control mt-6">
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      id="submitButton"
+                      disabled
+                    >
+                      Complete Your Reservation
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="text-center">
+              <h3 class="text-lg font-semibold">Talk To Us</h3>
+              <p class="text-gray-600 mt-2">
+                Have questions? We're here to help!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<script>// Mobile Menu Toggle Functionality using Tailwind classes
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuSpans = mobileMenuBtn.querySelectorAll('span');
+    
+    let isMenuOpen = false;
+    
+    // Toggle mobile menu
+    mobileMenuBtn.addEventListener('click', function() {
+        isMenuOpen = !isMenuOpen;
+        
+        if (isMenuOpen) {
+            // Show menu - remove the translate class
+            mobileMenu.classList.remove('-translate-y-full');
+            mobileMenu.classList.add('translate-y-0');
+            
+            // Animate hamburger to X using Tailwind classes
+            menuSpans[0].classList.add('rotate-45', 'translate-x-1', 'translate-y-1');
+            menuSpans[1].classList.add('opacity-0');
+            menuSpans[2].classList.add('-rotate-45', 'translate-x-1', '-translate-y-1');
+        } else {
+            // Hide menu - add the translate class back
+            mobileMenu.classList.remove('translate-y-0');
+            mobileMenu.classList.add('-translate-y-full');
+            
+            // Reset hamburger icon
+            menuSpans[0].classList.remove('rotate-45', 'translate-x-1', 'translate-y-1');
+            menuSpans[1].classList.remove('opacity-0');
+            menuSpans[2].classList.remove('-rotate-45', 'translate-x-1', '-translate-y-1');
+        }
+    });
+    
+    // Close menu when clicking outside
+    mobileMenu.addEventListener('click', function(e) {
+        if (e.target === mobileMenu) {
+            closeMobileMenu();
+        }
+    });
+    
+    // Close menu on window resize if desktop size
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768 && isMenuOpen) {
+            closeMobileMenu();
+        }
+    });
+});
+
+// Function to close mobile menu (called by menu links)
+function closeMobileMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const menuSpans = mobileMenuBtn.querySelectorAll('span');
+    
+    // Hide menu
+    mobileMenu.classList.remove('translate-y-0');
+    mobileMenu.classList.add('-translate-y-full');
+    
+    // Reset hamburger icon
+    menuSpans[0].classList.remove('rotate-45', 'translate-x-1', 'translate-y-1');
+    menuSpans[1].classList.remove('opacity-0');
+    menuSpans[2].classList.remove('-rotate-45', 'translate-x-1', '-translate-y-1');
+    
+    // Update state
+    isMenuOpen = false;
+}</script>
+    <script src="src/panel.js" type="module"></script>
+    <script src="src/jobs.js"></script>
+<script src="src/config.js" type="module"></script>
+
+  </body>
+</html>
