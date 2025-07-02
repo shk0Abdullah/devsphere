@@ -68,7 +68,7 @@ function createJobCard(job) {
                     `
                         : ""
                     }
-                    <a href = "https://docs.google.com/forms/d/e/1FAIpQLScQCHXbCLht0ZeeREyJp7JIlsx3arPKxDKhYelFqzsdI5cMFw/viewform?usp=header" 
+                    <a onclick="showPopup()" 
                         class="w-full p-3 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition-colors"
                     >
                         Apply Now    
