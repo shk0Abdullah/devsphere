@@ -68,12 +68,11 @@ function createJobCard(job) {
                     `
                         : ""
                     }
-                    <button 
-                        onclick="applyForJob('${job.id}')" 
-                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition-colors"
+                    <a href = "https://docs.google.com/forms/d/e/1FAIpQLScQCHXbCLht0ZeeREyJp7JIlsx3arPKxDKhYelFqzsdI5cMFw/viewform?usp=header" 
+                        class="w-full p-3 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition-colors"
                     >
-                        Apply Now
-                    </button>
+                        Apply Now    
+                    </a>
                 </div>
             `;
 }
@@ -119,19 +118,6 @@ async function loadJobs() {
     console.error("Error loading jobs:", error);
     showState("error");
   }
-}
-
-// Function to handle job application
-function applyForJob(jobId) {
-  // You can implement your application logic here
-  // For now, we'll just show an alert
-  alert(`Applying for job ID: ${jobId}`);
-
-  // Example: Redirect to application form
-  // window.location.href = `/apply?job=${jobId}`;
-
-  // Example: Open application modal
-  // openApplicationModal(jobId);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
