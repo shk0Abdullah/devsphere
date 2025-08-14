@@ -1,5 +1,5 @@
 "use client";
-import "../globals.css";
+
 import { useState } from "react";
 import Image from "next/image";
 
@@ -41,7 +41,7 @@ export default function Nav() {
           <a href="/#whatwedo" className="hover:text-white transition-colors">
             What we do
           </a>
-          <a href="/jobs" className="hover:text-white transition-colors">
+          <a href="/careers" className="hover:text-white transition-colors">
             Careers
           </a>
         </div>
