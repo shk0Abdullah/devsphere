@@ -3,7 +3,7 @@ import React from "react";
 function CtaHiring() {
   return (
     <>
-      <section className="text-center py-20 bg-black">
+      <section className="text-center py-40 bg-black">
         <div className="max-w-4xl mx-auto px-6">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             We're <span className="text-indigo-400">Hiring!</span>

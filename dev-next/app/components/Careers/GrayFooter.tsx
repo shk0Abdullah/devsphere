@@ -1,16 +1,17 @@
 "use client";
 import React from "react";
-
+import Image from "next/image";
 function GrayFooter() {
   return (
     <>
       <section id="footer">
         <footer className="footer sm:footer-horizontal bg-gray-900 text-neutral-content p-10">
           <aside>
-            <img
+            <Image
               src="/bg-none.png"
               alt="DevSphere Logo"
-              className="h-14 md:h-22 lg:h-26 w-auto"
+              width={200}
+              height={200}
             />
             <p className="text-white">
               DevSphere Ltd.

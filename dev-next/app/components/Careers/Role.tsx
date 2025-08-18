@@ -1,6 +1,10 @@
+"use client";
 import React from "react";
-
+import { atomPopup } from "@/app/utils/appsAtom";
+import { useAtom } from "jotai";
+import ContactPopup from "./ContactPopup";
 function Role() {
+  const [showPopup, setShowPopup] = useAtom(atomPopup);
   return (
     <>
       <section className="py-16 bg-black text-center">
@@ -11,13 +15,16 @@ function Role() {
             we'll keep you in mind for future opportunities.
           </p>
           <a
-            // onClick={showPopup()}
+            onClick={() => {
+              setShowPopup(true);
+            }}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full transition-colors"
           >
             Send Resume
           </a>
         </div>
       </section>
+      <ContactPopup />
     </>
   );
 }

@@ -256,11 +256,11 @@ function Hero() {
     <section id="home" className="relative">
       <div className="relative w-full min-h-screen bg-black flex flex-col lg:flex-row items-center justify-between px-4 sm:px-6 md:px-8 lg:px-16 pt-20 pb-8 lg:py-0">
         <div className="flex-1 max-w-lg text-left mb-6 lg:mb-0 z-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">
             Your Trusted{" "}
             <span className="text-indigo-400">AI Development Company</span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed px-2 sm:px-0">
+          <p className="text-base sm:text-lg md:text-xl mt-4 text-gray-300 leading-relaxed px-2 sm:px-0">
             We build meaningful AI Web based Solutions to shape the future of
             your business.
             <br className="hidden sm:block" />
